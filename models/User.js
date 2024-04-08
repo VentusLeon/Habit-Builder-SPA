@@ -12,10 +12,6 @@ const UserSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    },
-    view: {
-        type: String,
-        default: "daily"
     }
 })
 

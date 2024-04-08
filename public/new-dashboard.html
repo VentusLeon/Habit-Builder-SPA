@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../assets/new_dashboard_styles.css">
     
 </head>
+
 <body>
     <div id="app" v-cloak>
         <div>
@@ -22,9 +23,18 @@
     
         <div>
             <h2>Daily To-Do List</h2>
+            <p class="subtext">Click icons below to toggle Done/To-Do, mark favorites, or delete habits!</p>
         </div>
         <habit-container :habitContent="habitContent" @add-habit="addHabit" class="habit-container"></habit-container>
         <habits-list :habits="habits"></habits-list>
+
+        <footer>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/theboiiryan/" target="_blank"><i class="fa-2x fa-brands fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/ryan-holton-62a79322b" target="_blank"><i class="fa-2x fa-brands fa-linkedin"></i></a>
+                <a href="https://github.com/VentusLeon/VentusLeon" target="_blank"><i class="fa-2x fa-brands fa-github"></i></a>
+            </div>
+        </footer>
            
     </div>
 
@@ -64,11 +74,25 @@
                         }
                     })
                     this.habits.push(response.data)
+                },
+                async deleteOldHabits() {
+                    axios.post("DeleteOutdated")
+                    .then(response => {
+                        console.log(response.data.deletedCount, " documents deleted successfully")
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })
                 }
             },
             mounted() {
-                this.getUser()
-                this.getHabits()
+                this.deleteOldHabits()
+                .then(() => {
+                    this.getUser()
+                    this.getHabits()
+                }).catch(error => {
+                    console.error(error)
+                })
             }
         })                                                                     //app end here -----------------
 
@@ -78,11 +102,10 @@
                     <div>
                         &emsp;&emsp;&emsp;
                         <i class="fa-solid fa-check"></i>
-                        -Done&emsp;&emsp;
-                        <i class="fa-solid fa-x"></i>
-                        -Not Done&emsp;&emsp;
+                         Done&emsp;&emsp;
+                        
                         <i class="fa-solid fa-minus"></i>
-                        -Unmarked&emsp;&emsp;
+                         To-Do&emsp;&emsp;
                     </div>
                     <habit-input v-model="habitContent" @keydown.enter="submitHabit"></habit-input>
                     <button @click="submitHabit" class="submit-button"><i class="fa-solid fa-circle-plus"></i></button>
@@ -123,6 +146,10 @@
                 <div class="habits-list">
                     <ul>
                         <li v-for="(habit, index) in habits" :key="index" class="habits-list-item">{{habit.content}}
+                            <span @click="toggleCompleted(index, habit._id)">
+                                <i v-if="habit.complete" class="fa-solid fa-check complete"></i>
+                                <i v-else class="fa-solid fa-minus incomplete"></i>
+                            </span>
                             <i class="fa-solid fa-trash-can" @click="removeHabit(index, habit._id)"></i>
                             <span @click="toggleFavorite(index, habit._id)">
                                 <i v-if="habit.favorite" class="fa-solid fa-star fav-icon"></i>
@@ -155,6 +182,16 @@
                             }
                         }).then(console.log(id))
                     } catch (error) {console.error(error)}
+                },
+                async toggleCompleted(index, id) {
+                    try {
+                        this.habits[index].complete = !this.habits[index].complete
+                        await axios.post(API_URL + "ToggleComplete", {}, {
+                            params: {
+                                _id: id
+                            }
+                        }).then(console.log(id))
+                    } catch (error) { console.error(error)}
                 }
             }
         })                                                                      //habits-list end here -------------------

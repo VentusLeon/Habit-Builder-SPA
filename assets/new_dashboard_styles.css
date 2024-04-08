@@ -39,6 +39,14 @@ h2 {
     transform: translate(0, 150px)
 }
 
+.subtext {
+    padding: 10px;
+    text-shadow: 5px 3px #000000;
+    text-align: center;
+    position: relative;
+    transform: translate(0, 115px) 
+}
+
 ul {
     list-style-type: none;
     padding: 0;
@@ -82,9 +90,12 @@ ul {
 }
 
 .submit-button {
+    background-color: #0f0f0f;
+    border: none;
+    border-radius: 5px;
     position: absolute;
     right: 10px;
-    top: 30px;
+    top: 50px;
 }
 
 .habits-list {
@@ -92,7 +103,7 @@ ul {
     display: table;
     margin: 0 auto;
     width: 900px;
-    transform: translate(24% , 270px);
+    transform: translate(24% , 230px);
 }
 
 .habits-list-item {
@@ -102,6 +113,8 @@ ul {
     margin-bottom: 5px;
     text-align: center;
     width: 50%;
+    background-color: #3500D3;
+    box-shadow: 3px 3px 5px gray;
 }
 
 .fa-circle-plus {
@@ -135,7 +148,19 @@ ul {
 .fa-check {
     padding-bottom: 15px;
     padding-top: 15px;
-    color: green;
+    color: lightgreen;
+}
+
+.incomplete {
+    position: absolute;
+    left: 10px;
+    transform: translate(0px, -10px);
+}
+
+.complete {
+    position: absolute;
+    left: 10px;
+    transform: translate(0px, -10px);
 }
 
 .fa-x {
@@ -147,5 +172,32 @@ ul {
 .fa-minus {
     padding-bottom: 15px;
     padding-top: 15px;
-    color: rgb(221, 169, 0);
+    color: yellow;
+}
+
+footer {
+    background-color: #0f0f0fd7;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
+}
+
+.social-icons i {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+}
+
+.social-icons a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    opacity: 0.7;
 }

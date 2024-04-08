@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require("mongoose")
 
-//User & Model
+//User & Habit models
 const User = require("../models/User")
 const Habit = require("../models/Habit")
 
@@ -52,8 +52,7 @@ router.post("/AddHabit", async (req, res) => {
     var email = req.query.email
     Habit.findOne({ content: content, email: content }).then(habit => {
         if(habit) {
-            //what to do if habit already exists
-            //still needs logic here---------------
+            habit.content = habit.content + " #2"
         } else {
             const newHabit = new Habit({ content, email })
             newHabit.save().then(habit => {
@@ -64,6 +63,7 @@ router.post("/AddHabit", async (req, res) => {
     })
 })
 
+//API: delete habit from database
 router.post("/DeleteHabit", async (req, res) => {
     try {
         var id = req.query._id
@@ -74,6 +74,7 @@ router.post("/DeleteHabit", async (req, res) => {
     }
 })
 
+//API: toggle status of 'favorite' for given habit
 router.post("/FavoriteHabit", async (req, res) => {
     try {
         var id = req.query._id
@@ -87,5 +88,36 @@ router.post("/FavoriteHabit", async (req, res) => {
         )
     } catch (error) {console.error(error)}
 })
+
+router.post("/ToggleComplete", async (req, res) => {
+    try {
+        var id = req.query._id
+        var complete;
+        await Habit.findOne({_id: id }).then(habit => {
+            complete = habit.complete
+        })
+        await Habit.findOneAndUpdate(
+            { _id: id },
+            { $set: {complete: !complete}}
+        )
+    } catch (err) {console.error(err)}
+})
+
+//API: delete habits older than 24 hrs upon page load
+router.post("/DeleteOutdated", async (req, res) => {
+    try {
+        //Establishing time 24 hours ago from page load
+        const twentyFourHoursAgo = new Date();
+        twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24)
+
+        //Delete documents with timestampe over 24 hours old
+        const result = await Habit.deleteMany({ createdAt: { $lt: twentyFourHoursAgo } })
+        res.json({ deletedCount: result.deletedCount })
+    } catch (err) { console.error(err) }
+})
+
+
+
+
 
 module.exports = router

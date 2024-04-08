@@ -9,11 +9,11 @@ const HabitSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    dates: [{
-        date: String,
-        complete: String
-    }],
     favorite: {
+        type: Boolean,
+        default: false
+    },
+    complete: {
         type: Boolean,
         default: false
     }
