@@ -7,8 +7,6 @@ const path = require("path")
 
 const app = express()
 
-//Cors
-
 //DB
 const db = require(path.join(__dirname, "/config/keys.js")).MongoURI
 
@@ -16,12 +14,10 @@ const db = require(path.join(__dirname, "/config/keys.js")).MongoURI
 mongoose.connect(db).then(() => console.log("Connected to MongoDB successfully!"))
 .catch(err => console.log(err))
 
-//Expression
+//Express
 app.use(express.static(path.join(__dirname, "public")))
 app.use("/assets", express.static("./assets"))
 
-
-//EJS
 app.set("view engine", "ejs")
 
 //BodyParser
