@@ -7,12 +7,8 @@
     <script src="https://unpkg.com/vue@3"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/9fbdbccf85.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../assets/dashboard_styles.css">
-    <style>
-       [v-cloak] {
-        display: none;
-       } 
-    </style>
+    <link rel="stylesheet" href="../assets/new_dashboard_styles.css">
+    
 </head>
 <body>
     <div id="app" v-cloak>
@@ -27,19 +23,15 @@
         <div>
             <h2>Daily To-Do List</h2>
         </div>
-        <habit-container :habitContent="habitContent" @add-habit="addHabit" class="habit-container">
-            
-        </habit-container>
-        <ul>
-            <li v-for="habit in habits">{{habit.content}}</li>
-        </ul>
+        <habit-container :habitContent="habitContent" @add-habit="addHabit" class="habit-container"></habit-container>
+        <habits-list :habits="habits"></habits-list>
            
     </div>
 
     <script>
         const API_URL = "http://localhost:3000/"
 
-        const app = Vue.createApp({
+        const app = Vue.createApp({                                             //app start here -----------
             data() {
                 return {
                     user: '',
@@ -65,34 +57,34 @@
                 },
                 async addHabit(habitContent) {
                     // Assuming `user` is available in app data
-                    console.log('habitContent:', habitContent)
-                    console.log("email:", this.user.email)
-                    axios.post(API_URL + "AddHabit", {}, {
+                    const response = await axios.post(API_URL + "AddHabit", {}, {
                         params:{
                             content: habitContent,
                             email: this.user.email
                         }
-                    }).then(response => {
-                        this.getHabits()
-                    }).catch(error => {
-                        console.error("Error adding habit:", error)
                     })
-                    console.log('habitContent:', habitContent)
-                    console.log("email:", this.user.email)
-
-
+                    this.habits.push(response.data)
                 }
             },
             mounted() {
                 this.getUser()
                 this.getHabits()
             }
-        });
+        })                                                                     //app end here -----------------
 
-        app.component("habit-container", {
+        app.component("habit-container", {                                      //habit-container start here-----------
             template: `
-                <div class="habit-header" style="position: relative;">
-                    <habit-input v-model="habitContent"></habit-input>
+                <div class="habit-container">
+                    <div>
+                        &emsp;&emsp;&emsp;
+                        <i class="fa-solid fa-check"></i>
+                        -Done&emsp;&emsp;
+                        <i class="fa-solid fa-x"></i>
+                        -Not Done&emsp;&emsp;
+                        <i class="fa-solid fa-minus"></i>
+                        -Unmarked&emsp;&emsp;
+                    </div>
+                    <habit-input v-model="habitContent" @keydown.enter="submitHabit"></habit-input>
                     <button @click="submitHabit" class="submit-button"><i class="fa-solid fa-circle-plus"></i></button>
                 </div>
             `,
@@ -107,11 +99,11 @@
                     this.$emit("add-habit", this.habitContent)
                 }
             }
-        });
+        });                                                                     //habit-container end here -------------
 
-        app.component("habit-input", {
+        app.component("habit-input", {                                          //habit-input start here ---------------
             template: `
-                <input type="text" v-model="habitInputText" placeholder="Enter habit">
+                <input type="text" v-model="habitInputText" placeholder="Enter habit" class="habit-input">
             `,
             props: ["modelValue"],
             computed: {
@@ -124,14 +116,48 @@
                     }
                 }
             },
-        })
-        app.component("habits-list", {
+        })                                                                      //habit-input end here ------------------
+
+        app.component("habits-list", {                                          //habits-list start here -------------
             template: `
-                <ul>
-                    <li v-for="habit in habits">{{habit.content}}</li>
-                </ul>
-            `
-        })
+                <div class="habits-list">
+                    <ul>
+                        <li v-for="(habit, index) in habits" :key="index" class="habits-list-item">{{habit.content}}
+                            <i class="fa-solid fa-trash-can" @click="removeHabit(index, habit._id)"></i>
+                            <span @click="toggleFavorite(index, habit._id)">
+                                <i v-if="habit.favorite" class="fa-solid fa-star fav-icon"></i>
+                                <i v-else class="fa-regular fa-star unfav-icon"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            `,
+            props: ["habits"],
+            methods: {
+                async removeHabit(index, id) {
+                    try {
+                        this.habits.splice(index, 1)
+                        await axios.post(API_URL + "DeleteHabit", {}, {
+                            params: {
+                                _id: id
+                            }
+                        }).then(console.log(id))
+                    } catch (error) {
+                        console.error(error)
+                    }
+                },
+                async toggleFavorite(index, id){
+                    try {
+                        this.habits[index].favorite = !this.habits[index].favorite
+                        await axios.post(API_URL + "FavoriteHabit", {}, {
+                            params: {
+                                _id: id
+                            }
+                        }).then(console.log(id))
+                    } catch (error) {console.error(error)}
+                }
+            }
+        })                                                                      //habits-list end here -------------------
 
         app.mount("#app")
     </script>

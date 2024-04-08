@@ -1,0 +1,151 @@
+* {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+[v-cloak] {
+    display: none;
+}
+
+html {
+    height: 100%;
+}
+
+a {
+    color: grey;
+}
+
+body {
+    background: linear-gradient(to bottom, #0f0f0f 5%, #12014a);
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+}
+
+h1 {
+    position: absolute;
+    top: 30px;
+    left: 50px;
+    font-size: 50px;
+    text-shadow: 5px 3px #131313;
+}
+
+h2 {
+    padding: 10px;
+    font-size: 2em;
+    text-shadow: 5px 3px #000000;
+    text-align: center;
+    position: relative;
+    transform: translate(0, 150px)
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    top: 10px;
+}
+
+.logout-section {
+    display: table;
+    box-sizing: border-box;
+    transform: translate(850%, 50%);
+    background: #ffffff1a;
+    border-radius: 20px;
+    position: absolute;
+    width: 200px;
+    text-align: center;
+    overflow-y: auto;
+}
+
+.habit-container {
+    color: white;
+    background-color: #ffffff1a;
+    border-radius: 20px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    top: 250px;
+    left: 0;
+    right: 0;
+    width: 800px;
+    margin: 20px auto;
+    overflow-y: auto;
+}
+
+.habit-input {
+    width: 85%;
+    padding: 10px;
+}
+
+.submit-button {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+}
+
+.habits-list {
+    padding: 0;
+    display: table;
+    margin: 0 auto;
+    width: 900px;
+    transform: translate(24% , 270px);
+}
+
+.habits-list-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    text-align: center;
+    width: 50%;
+}
+
+.fa-circle-plus {
+    color: #3500D3;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.fa-trash-can {
+    position: absolute;
+    right: 350px;
+    color: darkgreen;
+}
+
+.fa-star {
+    color: gold;
+}
+
+.fav-icon {
+    position: absolute;
+    right: 380px;
+}
+
+.unfav-icon {
+    position: absolute;
+    right: 380px;
+}
+
+.fa-check {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    color: green;
+}
+
+.fa-x {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    color: red;
+}
+
+.fa-minus {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    color: rgb(221, 169, 0);
+}

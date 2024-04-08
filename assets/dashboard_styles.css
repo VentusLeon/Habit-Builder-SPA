@@ -33,7 +33,7 @@ a {
 .submit-button {
     position: absolute;
     right: 200px;
-    top: 27px;
+    top: 45px;
 }
 
 .logout-section {
@@ -48,8 +48,8 @@ a {
 
 .habit-container {
     color: white;
-    position: absolute;
-    top: 350px;
+    position: relative;
+    top: 250px;
     left: 50%;
     padding: 20px;
     width: 1000px;
@@ -86,6 +86,8 @@ h2 {
     background: #00000054;
     display: flex;
     flex-direction: row;
+    width: 900px;
+    transform: translate(0px, 200px);
 }
 
 .habit-list-item form {
@@ -133,6 +135,21 @@ h2 {
     width: 900px;
 }
 
+
+
+.habits-list ul {
+    padding: 0;
+    margin: 0;
+    display: table;
+    margin: 0 auto;
+}
+
+.habits-list li {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+
 .fa-circle-plus {
     color: #3500D3;
     border: none;
@@ -150,6 +167,7 @@ h2 {
 }
 
 .fa-check {
+    padding-bottom: 15px;
     color: green;
 }
 
@@ -159,26 +177,4 @@ h2 {
 
 .fa-minus {
     color: rgb(221, 169, 0);
-}
-
-.dotw {
-    display: inline-block;
-    margin-left: 3%;
-    margin-right: 3%;
-    margin-bottom: 12px;
-    position: relative;
-    width: 50px;
-    height: 60px;
-    background-color: #FFFFFA;
-    text-align: center;
-    font-size: 10pt;
-    border-radius: 3px;
-    box-shadow: 3px 3px 1px grey;
-    overflow: hidden;
-    user-select: none;
-}
-
-.day {
-    width: 100%;
-    background-color: #E54B4B;
 }

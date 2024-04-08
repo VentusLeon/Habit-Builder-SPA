@@ -9,12 +9,6 @@ const Habit = require("../models/Habit")
 //Welcome Page GET
 router.get("/", (req, res) => res.render("welcome"))
 
-/* Not sure how to incorporate existing remembered habits with new dynamically added ones
-* but probably going to make a temporary array with new habit objects to add after
-* page is closed, or periodically make ajax requests to update database so that initial load
-* will handle it
-*/
-
 //Dashboard GET
 var email=""
 router.get("/dashboard", async (req, res) => {
@@ -59,13 +53,39 @@ router.post("/AddHabit", async (req, res) => {
     Habit.findOne({ content: content, email: content }).then(habit => {
         if(habit) {
             //what to do if habit already exists
+            //still needs logic here---------------
         } else {
             const newHabit = new Habit({ content, email })
             newHabit.save().then(habit => {
                 console.log(habit)
+                res.send(habit)
             }).catch(err => console.log(err))
         }
     })
+})
+
+router.post("/DeleteHabit", async (req, res) => {
+    try {
+        var id = req.query._id
+        
+        await Habit.deleteOne({ _id: new mongoose.Types.ObjectId(id)})
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+router.post("/FavoriteHabit", async (req, res) => {
+    try {
+        var id = req.query._id
+        var favorite;
+        await Habit.findOne({ _id: id }).then(habit => {
+            favorite = habit.favorite
+        })
+        await Habit.findOneAndUpdate(
+            { _id: id },
+            { $set: {favorite: !favorite}}
+        )
+    } catch (error) {console.error(error)}
 })
 
 module.exports = router
