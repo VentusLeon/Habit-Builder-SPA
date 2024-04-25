@@ -23,7 +23,7 @@ How to run:
 * Step 3:
 * --Execute command "npm install" to install dependencies
 * Step 4:
-* --Execute command "node app.js"
+* --Execute command "node server.js"
 * Step 5:
 * --In a web browser such as Firefox/Chrome, enter the url "http://localhost:8080"
 * Step 6:
